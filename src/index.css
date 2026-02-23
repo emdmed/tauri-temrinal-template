@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+/* Local Typestar OCR font declaration */
+@font-face {
+  font-family: 'Typestar OCR';
+  src: url('/Typestar-OCR.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* Font family */
+  --font-mono: "Typestar OCR", "JetBrains Mono", "Source Code Pro", Menlo, Monaco, "Courier New", monospace;
+  
+  /* Consistent font scale for OCR A */
+  --font-xs: 10px;
+  --font-sm: 11px;
+  --font-base: 12px;
+  --font-lg: 13px;
+  --font-xl: 14px;
+  --font-2xl: 16px;
+
+  /* Default theme colors - will be overridden by ThemeProvider */
+  --color-border: hsl(240 13% 20%);
+  --color-input: hsl(240 13% 20%);
+  --color-input-background: hsl(240 13% 10%);
+  --color-ring: hsl(225 46% 67%);
+  --color-background: hsl(240 13% 14%);
+  --color-foreground: hsl(45 26% 80%);
+
+  --color-primary: hsl(225 46% 67%);
+  --color-primary-foreground: hsl(240 13% 14%);
+
+  --color-secondary: hsl(240 13% 18%);
+  --color-secondary-foreground: hsl(45 26% 80%);
+
+  --color-muted: hsl(240 13% 18%);
+  --color-muted-foreground: hsl(45 26% 60%);
+
+  --color-accent: hsl(225 46% 67%);
+  --color-accent-foreground: hsl(240 13% 14%);
+
+  --color-destructive: hsl(359 50% 51%);
+  --color-destructive-foreground: hsl(45 26% 80%);
+
+  --color-card: hsl(240 13% 16%);
+  --color-card-foreground: hsl(45 26% 80%);
+
+  --color-popover: hsl(240 13% 16%);
+  --color-popover-foreground: hsl(45 26% 80%);
+
+  /* Status colors */
+  --color-status-critical: #E82424;
+  --color-status-warning: #FF9E3B;
+  --color-status-success: #76946A;
+  --color-status-info: #6B8CCE;
+
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  /* Background color will be set dynamically by ThemeProvider */
+  font-family: "Typestar OCR", "JetBrains Mono", "Source Code Pro", Menlo, Monaco, "Courier New", monospace;
+}
+
+:root {
+  /* Sidebar variables - will be dynamically set by ThemeProvider */
+  --sidebar: var(--color-sidebar);
+  --sidebar-foreground: var(--color-sidebar-foreground);
+  --sidebar-primary: var(--color-sidebar-primary);
+  --sidebar-primary-foreground: var(--color-sidebar-primary-foreground);
+  --sidebar-accent: var(--color-sidebar-accent);
+  --sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
+  --sidebar-border: var(--color-sidebar-border);
+  --sidebar-ring: var(--color-sidebar-ring);
+}
+
+@theme inline {
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    border-style: dashed;
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Semantic color utilities */
+.text-folder {
+  color: hsl(var(--color-folder));
+}
+
+.text-git-added {
+  color: hsl(var(--color-git-added));
+}
+
+.text-git-deleted {
+  color: hsl(var(--color-git-deleted));
+}
+
+.border-tree-guide {
+  border-color: hsl(var(--color-tree-guide));
+}
+
+/* Focus visible styles for keyboard navigation */
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background;
+}
+
+/* Theme transition for smooth color changes */
+.theme-transition {
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Firefox scrollbar (not applied in WebKit/Tauri) */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  }
+}
+
+/* Force scrollbar to always show at same size */
+.overflow-y-auto,
+.overflow-auto {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Filetree font enforcement */
+.filetree-container {
+  font-family: var(--font-mono) !important;
+  font-size: var(--font-sm);
+  line-height: 1.4;
+}
+
+/* Engineering sketch dashed borders */
+.border-sketch {
+  border-style: dashed !important;
+  border-color: color-mix(in srgb, var(--color-border, rgba(255, 255, 255, 0.12)) 40%, transparent);
+}
+
+.border-t-sketch {
+  border-top-style: dashed !important;
+  border-top-color: color-mix(in srgb, var(--color-border, rgba(255, 255, 255, 0.12)) 40%, transparent);
+}
+
+.border-b-sketch {
+  border-bottom-style: dashed !important;
+  border-bottom-color: color-mix(in srgb, var(--color-border, rgba(255, 255, 255, 0.12)) 40%, transparent);
+}
+
+.border-e-sketch {
+  border-inline-end-style: dashed !important;
+  border-inline-end-color: color-mix(in srgb, var(--color-border, rgba(255, 255, 255, 0.12)) 40%, transparent);
+}
+
+/* Terminal focus indicator */
+/* .terminal-wrapper::after { */
+/*   content: ''; */
+/*   position: absolute; */
+/*   inset: -4px; */
+/*   border-width: 1px; */
+/*   border-style: solid !important; */
+/*   border-radius: 0rem; */
+/*   opacity: 0; */
+/*   transition: opacity 150ms ease; */
+/*   pointer-events: none; */
+/*   z-index: 1; */
+/* } */
+/**/
+/* .terminal-wrapper.terminal-focused::after { */
+/*   opacity: 1; */
+/* } */
+
+/* Font test indicator - remove after confirming Typestar OCR works */
+.font-test-indicator {
+  font-family: 'Typestar OCR', monospace !important;
+  background: rgba(255, 255, 0, 0.1) !important;
+  border: 2px solid yellow !important;
+  padding: 4px 8px !important;
+  margin: 4px !important;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse {
+    animation: none;
+  }
+  
+  .transition-all,
+  .transition-colors,
+  .transition-opacity,
+  .transition-transform {
+    transition-duration: 0.01ms !important;
+  }
+}
